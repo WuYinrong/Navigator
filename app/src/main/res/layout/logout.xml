@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
     android:paddingLeft="20dp"
-</LinearLayout>
+    android:paddingRight="20dp"
+    android:paddingTop="20dp">
+    <!--<string name="app_name">Navigator</string>-->
+    <!-- TODO: change the text -->
+
+    <!-- button to login-->
+    <!--<string name="app_name">Navigator</string>-->
+    <!-- TODO: change the text -->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_centerInParent="true"
+        android:text="Logout"
+        android:fontFamily="Roboto"
+        android:textColor="@android:color/white"
+        android:background="@drawable/login_buttons"
+        android:id="@+id/logout" />
+    <!--<string name="app_name">Navigator</string>-->
+    <!-- TODO: change the text -->
+
+</RelativeLayout>
+

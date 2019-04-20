@@ -1,108 +1,195 @@
 package com.org.navigator;
 
-import android.content.Context;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link LoginFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LoginFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class LoginFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private View loginLayout;
+    private View logoutLayout;
+    private EditText mUsernameEditText;
+    private EditText mPasswordEditText;
+    // the total number
+    private Button mSubmitButton;
+    /**
+     * Static function, an instance
+     * @return new instance
+     */
+    private Button mRegisterButton;
+    private Button mLogoutButton;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private DatabaseReference mDatabase;
 
-    private OnFragmentInteractionListener mListener;
+/**
+ * Static function, an instance
+ * @return new instance
+ */
+
+    /**
+     * Static function, create loginFragment instance
+     * @return new instance of accident fragment
+     */
+    public static LoginFragment newInstance() {
+        LoginFragment loginFragment = new LoginFragment();
+        return loginFragment;
+        /**
+         * Static function, an instance
+         * @return new instance
+         */
+    }
+
 
     public LoginFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static LoginFragment newInstance(String param1, String param2) {
-        LoginFragment fragment = new LoginFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
+
+
+        loginLayout = view.findViewById(R.id.loginLayout);
+        /**
+         * Static function, an instance
+         * @return new instance
+         */
+        logoutLayout = view.findViewById(R.id.logoutLayout);
+        showLayout();
+        // Write a message to the database
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference myRef = database.getReference("message");
+//        myRef.setValue("Hello, World!");
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mUsernameEditText = (EditText) view.findViewById(R.id.editTextLogin);
+        mPasswordEditText = (EditText) view.findViewById(R.id.editTextPassword);
+        mSubmitButton = (Button) view.findViewById(R.id.submit);
+        /**
+         * Static function, an instance
+         * @return new instance
+         */
+        mRegisterButton = (Button) view.findViewById(R.id.register);
+        mLogoutButton = (Button) view.findViewById(R.id.logout);
+
+        mRegisterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String username = mUsernameEditText.getText().toString();
+                final String password = mPasswordEditText.getText().toString();
+
+                mDatabase.child("user").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // the total number
+                        if (dataSnapshot.hasChild(username)) {
+                            Toast.makeText(getActivity(),"username is already registered, please change one", Toast.LENGTH_SHORT).show();
+                        } else if (!username.equals("") && !password.equals("")){
+                            // put username as key to set value
+                            final User user = new User();
+                            user.setUser_account(username);
+                            user.setUser_password(Utils.md5Encryption(password));
+                            user.setUser_timestamp(System.currentTimeMillis());
+                            /**
+                             * Static function, an instance
+                             * @return new instance
+                             */
+
+                            mDatabase.child("user").child(user.getUser_account()).setValue(user);
+                            Toast.makeText(getActivity(),"Successfully registered", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
+
+        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String username = mUsernameEditText.getText().toString();
+                final String password = Utils.md5Encryption(mPasswordEditText.getText().toString());
+
+                mDatabase.child("user").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // the total number
+                        if (dataSnapshot.hasChild(username) && (password.equals(dataSnapshot.child(username).child("user_password").getValue()))) {
+                            Config.username = username;
+                            /**
+                             * Static function, an instance
+                             * @return new instance
+                             */
+                            showLayout();
+                        } else {
+                            Toast.makeText(getActivity(),"Please login again", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // the total number
+                    }
+                });
+            }
+        });
+
+        mLogoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Config.username = null;
+                /**
+                 * Static function, an instance
+                 * @return new instance
+                 */
+                showLayout();
+            }
+        });
+
+        return view;
+
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+    private void showLayout() {
+        if (Config.username == null) {
+            logoutLayout.setVisibility(View.GONE);
+            loginLayout.setVisibility(View.VISIBLE);
+            /**
+             * Static function, an instance
+             * @return new instance
+             */
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            logoutLayout.setVisibility(View.VISIBLE);
+            loginLayout.setVisibility(View.GONE);
+            /**
+             * Static function, an instance
+             * @return new instance
+             */
         }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }
