@@ -3,24 +3,11 @@ package com.org.navigator;
 public class TrafficEvent {
     private String id;
     private String event_type;
-    /**
-     * Static function, an instance
-     * @return new instance
-     */
     private int event_comment_number;
     private long event_timestamp;
-    /**
-     * Static function, an instance
-     * @return new instance
-     */
     private double event_longitude;
     private double event_latitude;
-    // the total number
     private String event_reporter_id;
-    /**
-     * Static function, an instance
-     * @return new instance
-     */
     private String event_level;
     private int event_like_number;
     private String imgUri;
@@ -62,10 +49,6 @@ public class TrafficEvent {
     public String getEvent_type() {
         return event_type;
     }
-    /**
-     * Static function, an instance
-     * @return new instance
-     */
 
     public void setEvent_type(String event_type) {
         this.event_type = event_type;
@@ -78,10 +61,6 @@ public class TrafficEvent {
     public void setEvent_comment_number(int event_comment_number) {
         this.event_comment_number = event_comment_number;
     }
-    /**
-     * Static function, an instance
-     * @return new instance
-     */
 
     public long getEvent_timestamp() {
         return event_timestamp;
@@ -90,10 +69,7 @@ public class TrafficEvent {
     public void setEvent_timestamp(long event_timestamp) {
         this.event_timestamp = event_timestamp;
     }
-    /**
-     * Static function, an instance
-     * @return new instance
-     */
+
 
     public void setEvent_latitude(double event_latitude) {
         this.event_latitude = event_latitude;
@@ -105,10 +81,7 @@ public class TrafficEvent {
 
     public void setEvent_reporter_id(String event_reporter_id) {
         this.event_reporter_id = event_reporter_id;
-        /**
-         * Static function, an instance
-         * @return new instance
-         */
+
     }
 
     public double getEvent_longitude() {
@@ -116,20 +89,12 @@ public class TrafficEvent {
     }
 
     public void setEvent_longitude(double event_longitude) {
-        // the total number
         this.event_longitude = event_longitude;
-        /**
-         * Static function, an instance
-         * @return new instance
-         */
     }
 
     public double getEvent_latitude() {
         return event_latitude;
     }
-
-
-
 
 
     public String getEvent_description() {
@@ -138,16 +103,8 @@ public class TrafficEvent {
 
     public void setEvent_description(String event_description) {
         this.event_description = event_description;
-        /**
-         * Static function, an instance
-         * @return new instance
-         */
     }
 
     private String event_description;
-    /**
-     * Static function, an instance
-     * @return new instance
-     */
 
 }
