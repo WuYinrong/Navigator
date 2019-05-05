@@ -6,11 +6,6 @@ public class TrafficEvent {
     private int event_comment_number;
     private long event_timestamp;
     private double event_longitude;
-    private double event_latitude;
-    private String event_reporter_id;
-    private String event_level;
-    private int event_like_number;
-    private String imgUri;
 
     public String getImgUri() {
         return imgUri;
@@ -19,7 +14,6 @@ public class TrafficEvent {
     public void setImgUri(String imgUri) {
         this.imgUri = imgUri;
     }
-
 
     public String getId() {
         return id;
@@ -32,6 +26,29 @@ public class TrafficEvent {
 
     public String getEvent_level() {
         return event_level;
+    }
+
+    private double event_latitude;
+    private String event_reporter_id;
+    private String event_level;
+    private int event_like_number;
+    private String imgUri;
+
+    public long getEvent_timestamp() {
+        return event_timestamp;
+    }
+
+    public void setEvent_timestamp(long event_timestamp) {
+        this.event_timestamp = event_timestamp;
+    }
+
+    /**
+     * Static function, an instance
+     * @return new instance
+     */
+
+    public void setEvent_latitude(double event_latitude) {
+        this.event_latitude = event_latitude;
     }
 
     public void setEvent_level(String event_level) {
@@ -62,18 +79,7 @@ public class TrafficEvent {
         this.event_comment_number = event_comment_number;
     }
 
-    public long getEvent_timestamp() {
-        return event_timestamp;
-    }
-
-    public void setEvent_timestamp(long event_timestamp) {
-        this.event_timestamp = event_timestamp;
-    }
-
-
-    public void setEvent_latitude(double event_latitude) {
-        this.event_latitude = event_latitude;
-    }
+    // get the total number
 
     public String getEvent_reporter_id() {
         return event_reporter_id;
@@ -96,6 +102,10 @@ public class TrafficEvent {
         return event_latitude;
     }
 
+    /**
+     * Static function, an instance
+     * @return new instance
+     */
 
     public String getEvent_description() {
         return event_description;
